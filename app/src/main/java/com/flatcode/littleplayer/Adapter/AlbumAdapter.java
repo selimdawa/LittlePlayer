@@ -55,24 +55,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
                 DATA.ALBUM_NAME, albumFiles.get(position).getAlbum()));
     }
 
-    /*private void deleteFile(int position, View v) {
-        Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                Long.parseLong(list.get(position).getId()));
-        list.remove(position);
-        File file = new File(list.get(position).getPath());
-        boolean deleted = file.delete();
-        if (deleted) {
-            context.getContentResolver().delete(contentUri, null, null);
-            list.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, list.size());
-            Snackbar.make(v, "File Deleted", Snackbar.LENGTH_LONG).show();
-        } else {
-            Snackbar.make(v, "Can't be Deleted", Snackbar.LENGTH_LONG).show();
-
-        }
-    }*/
-
     @Override
     public int getItemCount() {
         return albumFiles.size();

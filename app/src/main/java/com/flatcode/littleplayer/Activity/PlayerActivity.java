@@ -21,8 +21,6 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -174,7 +172,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.onCompleted();
-            musicService.showNotification(R.drawable.ic_pause);
             binding.playPause.setBackgroundResource(R.drawable.ic_pause);
             musicService.start();
         } else {
@@ -202,7 +199,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.onCompleted();
-            musicService.showNotification(R.drawable.ic_pause);
             binding.playPause.setBackgroundResource(R.drawable.ic_play);
         }
     }
@@ -244,7 +240,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.onCompleted();
-            musicService.showNotification(R.drawable.ic_pause);
             binding.playPause.setBackgroundResource(R.drawable.ic_pause);
             musicService.start();
         } else {
@@ -272,7 +267,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.onCompleted();
-            musicService.showNotification(R.drawable.ic_pause);
             binding.playPause.setBackgroundResource(R.drawable.ic_play);
         }
     }
@@ -296,7 +290,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
     public void playPauseBtn() {
         if (musicService.isPlaying()) {
             binding.playPause.setImageResource(R.drawable.ic_play);
-            musicService.showNotification(R.drawable.ic_play);
             musicService.pause();
             binding.seekBar.setMax(musicService.getDuration() / 1000);
             PlayerActivity.this.runOnUiThread(new Runnable() {
@@ -310,7 +303,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
         } else {
-            musicService.showNotification(R.drawable.ic_pause);
             binding.playPause.setImageResource(R.drawable.ic_pause);
             musicService.start();
             binding.seekBar.setMax(musicService.getDuration() / 1000);
@@ -414,47 +406,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         }
     }
 
-    /*public void ImageAnimation(Context context, ImageView image, ImageView imageBlur, Bitmap bitmap) {
-        Animation animOut = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
-        Animation animIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
-        animOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                VOID.GlideBitmap(context, bitmap, image);
-                VOID.GlideBlurBitmap(context, bitmap, imageBlur, 50);
-                animIn.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-                image.setAnimation(animIn);
-                imageBlur.setAnimation(animIn);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-        image.setAnimation(animOut);
-        imageBlur.setAnimation(animOut);
-    }*/
-
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         MusicService.MyBinder myBinder = (MusicService.MyBinder) service;
@@ -466,7 +417,6 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         binding.songName.setText(listSongs.get(position).getTitle());
         binding.songArtist.setText(listSongs.get(position).getArtist());
         musicService.onCompleted();
-        musicService.showNotification(R.drawable.ic_pause);
     }
 
     @Override

@@ -1,14 +1,10 @@
 package com.flatcode.littleplayer.Service;
 
 import static com.flatcode.littleplayer.Activity.PlayerActivity.listSongs;
-import static com.flatcode.littleplayer.Unit.ApplicationClass.CHANNEL_ID_2;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,10 +13,8 @@ import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 
 import com.flatcode.littleplayer.Model.MusicFiles;
-import com.flatcode.littleplayer.R;
 import com.flatcode.littleplayer.Unit.ActionPlaying;
 import com.flatcode.littleplayer.Unit.DATA;
 
@@ -164,45 +158,6 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
     public void setCallBack(ActionPlaying actionPlaying) {
         this.actionPlaying = actionPlaying;
-    }
-
-    public void showNotification(int playPauseBtn) {
-        /*Intent intent = new Intent(this, PlayerActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        // Previous
-        Intent prevIntent = new Intent(this, NotificationReceiver.class);//.setAction(ACTION_PREVIOUS);
-        PendingIntent prevPending = PendingIntent.getBroadcast(this, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Pause
-        Intent pauseIntent = new Intent(this, NotificationReceiver.class).setAction(ACTION_PLAY);
-        PendingIntent pausePending = PendingIntent.getBroadcast(this, 0, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Next
-        Intent nextIntent = new Intent(this, NotificationReceiver.class).setAction(ACTION_NEXT);
-        PendingIntent nextPending = PendingIntent.getBroadcast(this, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-*/
-        byte[] picutre = null;
-        picutre = getAlbumArt(musicFiles.get(position).getPath());
-        Bitmap thumb = null;
-        if (picutre != null) {
-            thumb = BitmapFactory.decodeByteArray(picutre, 0, picutre.length);
-        } else {
-            thumb = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
-        }
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID_2)
-                .setSmallIcon(playPauseBtn)
-                .setLargeIcon(thumb)
-                .setContentTitle(musicFiles.get(position).getTitle())
-                .setContentText(musicFiles.get(position).getArtist())
-                //.addAction(playPauseBtn, "Pause", pausePending)
-                //.addAction(R.drawable.ic_pause, "W",
-                //.addAction(R.drawable.ic_skip_next, "Next", nextPending)
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setMediaSession(mediaSessionCompat.getSessionToken()))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setOnlyAlertOnce(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .build();
-        startForeground(2, notification);
     }
 
     private byte[] getAlbumArt(String uri) {
