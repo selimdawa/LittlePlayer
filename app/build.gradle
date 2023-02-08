@@ -17,17 +17,17 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('D:\\MyProjects\\Java\\Little Player\\Little Player\\LittlePlayer.jks')
-            storePassword 'semosn1998'
+            /*storeFile file('D:\\MyProjects\\Java\\Little Player\\Little Player\\LittlePlayer.jks')
+            storePassword '000000'
             keyAlias = 'LittlePlayer'
-            keyPassword 'semosn1998'
+            keyPassword '000000'*/
         }
     }
     buildTypes {
         release {
-            //minifyEnabled false
-            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
         }
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_11
