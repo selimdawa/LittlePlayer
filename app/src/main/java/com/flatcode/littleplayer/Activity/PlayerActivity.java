@@ -12,22 +12,17 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.palette.graphics.Palette;
 
 import com.flatcode.littleplayer.Model.MusicFiles;
 import com.flatcode.littleplayer.R;
@@ -62,14 +57,16 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         Objects.requireNonNull(getSupportActionBar()).hide();
         getIntentMethod();
+
+        binding.back.setOnClickListener(v -> onBackPressed());
         binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (musicService != null && fromUser) {
+                if (musicService != null && fromUser)
                     musicService.seekTo(progress * 1000);
-                }
             }
 
             @Override
@@ -115,8 +112,9 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
     }
 
     private void setFullScreen() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     @Override
@@ -218,11 +216,10 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         if (musicService.isPlaying()) {
             musicService.stop();
             musicService.release();
-            if (shuffleBoolean && !repeatBoolean) {
+            if (shuffleBoolean && !repeatBoolean)
                 position = getRandom(listSongs.size() - 1);
-            } else if (!shuffleBoolean && !repeatBoolean) {
+            else if (!shuffleBoolean && !repeatBoolean)
                 position = ((position + 1) % listSongs.size());
-            }
             uri = Uri.parse(listSongs.get(position).getPath());
             musicService.createMediaPlayer(position);
             metaData(uri);
@@ -245,11 +242,11 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         } else {
             musicService.stop();
             musicService.release();
-            if (shuffleBoolean && !repeatBoolean) {
+            if (shuffleBoolean && !repeatBoolean)
                 position = getRandom(listSongs.size() - 1);
-            } else if (!shuffleBoolean && !repeatBoolean) {
+            else if (!shuffleBoolean && !repeatBoolean)
                 position = ((position + 1) % listSongs.size());
-            }
+
             uri = Uri.parse(listSongs.get(position).getPath());
             musicService.createMediaPlayer(position);
             metaData(uri);
@@ -281,7 +278,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
             @Override
             public void run() {
                 super.run();
-                binding.playPause.setOnClickListener(v -> playPauseBtn());
+                binding.playPauseBtn.setOnClickListener(v -> playPauseBtn());
             }
         };
         playThread.start();
@@ -326,21 +323,20 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         String minutes = String.valueOf(currentPosition / 60);
         totalOut = minutes + ":" + seconds;
         totalNew = minutes + ":" + "0" + seconds;
-        if (seconds.length() == 1) {
+        if (seconds.length() == 1)
             return totalNew;
-        } else {
+        else
             return totalOut;
-        }
     }
 
     private void getIntentMethod() {
         position = getIntent().getIntExtra(DATA.POSITION, -1);
         String sender = getIntent().getStringExtra(DATA.SENDER);
-        if (sender != null && sender.equals(DATA.ALBUM_DETAILS)) {
+        if (sender != null && sender.equals(DATA.ALBUM_DETAILS))
             listSongs = albumFiles;
-        } else {
+        else
             listSongs = mFiles;
-        }
+
         if (listSongs != null) {
             binding.playPause.setImageResource(R.drawable.ic_pause);
             uri = Uri.parse(listSongs.get(position).getPath());
@@ -359,48 +355,10 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         Bitmap bitmap;
         if (art != null) {
             bitmap = BitmapFactory.decodeByteArray(art, 0, art.length);
-            //ImageAnimation(context, binding.image, binding.imageBlur, bitmap);
             VOID.GlideBitmap(context, bitmap, binding.image);
-            VOID.GlideBlurBitmap(context, bitmap, binding.imageBlur, 50);
-
-            Palette.from(bitmap).generate(palette -> {
-                assert palette != null;
-                Palette.Swatch swatch = palette.getDominantSwatch();
-                if (swatch != null) {
-                    ImageView gradient = binding.imageViewGradient;
-                    LinearLayout container = binding.container;
-                    gradient.setBackgroundResource(R.drawable.gradient_bg);
-                    container.setBackgroundResource(R.drawable.main_bg);
-                    GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
-                            new int[]{swatch.getRgb(), 0x00000000});
-                    gradient.setBackground(gradientDrawable);
-                    GradientDrawable gradientDrawableBg = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
-                            new int[]{swatch.getRgb(), swatch.getRgb()});
-                    container.setBackground(gradientDrawableBg);
-                    binding.songName.setTextColor(swatch.getTitleTextColor());
-                    binding.songArtist.setTextColor(swatch.getBodyTextColor());
-                } else {
-                    ImageView gradient = binding.imageViewGradient;
-                    LinearLayout container = binding.container;
-                    gradient.setBackgroundResource(R.drawable.gradient_bg);
-                    container.setBackgroundResource(R.drawable.main_bg);
-                    GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
-                            new int[]{0xff000000, 0x00000000});
-                    gradient.setBackground(gradientDrawable);
-                    GradientDrawable gradientDrawableBg = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
-                            new int[]{0xff000000, 0xff000000});
-                    container.setBackground(gradientDrawableBg);
-                    binding.songName.setTextColor(Color.WHITE);
-                    binding.songArtist.setTextColor(Color.DKGRAY);
-                }
-            });
+            VOID.GlideBlurBitmap(context, bitmap, binding.imageBlur, 10);
         } else {
             VOID.Glide(context, null, binding.image);
-            VOID.GlideBlurBitmap(context, null, binding.imageBlur, 50);
-            ImageView gradient = binding.imageViewGradient;
-            LinearLayout container = binding.container;
-            gradient.setBackgroundResource(R.drawable.gradient_bg);
-            container.setBackgroundResource(R.drawable.main_bg);
             binding.songName.setTextColor(Color.WHITE);
             binding.songArtist.setTextColor(Color.DKGRAY);
         }

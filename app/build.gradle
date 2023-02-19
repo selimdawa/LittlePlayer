@@ -10,18 +10,18 @@ android {
         applicationId "com.flatcode.littleplayer"
         minSdk 23
         targetSdk 33
-        versionCode 2
-        versionName "1.05"
+        versionCode 3
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
-        release {
-            /*storeFile file('D:\\MyProjects\\Java\\Little Player\\Little Player\\LittlePlayer.jks')
+        /*release {
+            storeFile file('D:\\MyProjects\\Java\\Little Player\\Little Player\\LittlePlayer.jks')
             storePassword '000000'
             keyAlias = 'LittlePlayer'
-            keyPassword '000000'*/
-        }
+            keyPassword '000000'
+        }*/
     }
     buildTypes {
         release {
@@ -60,9 +60,4 @@ dependencies {
     //Player
     implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.media:media:1.6.0'
-    implementation 'androidx.palette:palette:1.0.0'
-    //Live Cycle - Use these libraries if you are having trouble exporting the application
-    //def lifecycle_version = "2.5.1"
-    //implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-    //implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 }

@@ -10,7 +10,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/sort"
         android:title="Sort By"
         app:showAsAction="never">
         <menu>

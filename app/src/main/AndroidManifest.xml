@@ -26,7 +26,8 @@
         </activity>
 
         <activity android:name=".Activity.MainActivity" />
-        <activity android:name=".Activity.PlayerActivity" />
+        <activity android:name=".Activity.PlayerActivity"
+            android:theme="@style/OneTheme.NoActionBarAndStatusBar"/>
         <activity android:name=".Activity.AlbumDetailsActivity" />
 
         <service
