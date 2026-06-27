@@ -5,6 +5,8 @@
  <a><img alt="Target SDK" src="https://img.shields.io/badge/Target SDK-33-0EB265?logo=android&logoColor=0EB265"/></a>
 </p>
 
+- [Kotlin New Code Version](https://github.com/selimdawa/LittlePlayerKotlin/)
+
 ## Images
 Songs | Albums | Song Search 
 --- | --- | --- | 
